@@ -12,6 +12,14 @@ function showPrompt() {
       message: "What would you like to do?",
       choices: [
         {
+          name: "View all departments",
+          value: "viewAllDepartments",
+        },
+        {
+          name: "View all roles",
+          value: "viewAllRoles",
+        },
+        {
           name: "View all employess",
           value: "viewAllEmployees",
         },
@@ -27,6 +35,12 @@ function showPrompt() {
       case "viewAllEmployees":
         viewEmployees();
         break;
+      case "viewAllDepartments":
+        viewDepartments();
+        break;
+      case "viewAllRoles":
+        viewRoles();
+        break;
       default:
         quit();
     }
@@ -37,12 +51,34 @@ function viewEmployees() {
   data
     .findAllEmployess()
     .then(([rows]) => {
+      console.log("\n");
+      console.table(rows);
+    })
+    .then(() => showPrompt());
+}
+
+function viewDepartments() {
+  data
+    .findAllDepartments()
+    .then(([rows]) => {
+      console.log("\n");
+      console.table(rows);
+    })
+    .then(() => showPrompt());
+}
+
+function viewRoles() {
+  data
+    .findAllRoles()
+    .then(([rows]) => {
+      console.log("\n");
       console.table(rows);
     })
     .then(() => showPrompt());
 }
 
 function quit() {
+  console.log("\n");
   console.log("Bye");
   process.exit();
 }
