@@ -24,6 +24,10 @@ function showPrompt() {
           value: "viewAllEmployees",
         },
         {
+          name: "Add a department",
+          value: "addDepartment",
+        },
+        {
           name: "Quit",
           value: "quit",
         },
@@ -40,6 +44,9 @@ function showPrompt() {
         break;
       case "viewAllRoles":
         viewRoles();
+        break;
+      case "addDepartment":
+        addDepartment();
         break;
       default:
         quit();
@@ -75,6 +82,21 @@ function viewRoles() {
       console.table(rows);
     })
     .then(() => showPrompt());
+}
+
+function addDepartment() {
+  prompt([
+    {
+      name: "name",
+      message: "What is the name of the department?",
+    },
+  ]).then((res) => {
+    let department = res;
+    data
+      .createDepartment(department)
+      .then(() => console.log(`Department ${department.name} added`))
+      .then(() => showPrompt());
+  });
 }
 
 function quit() {

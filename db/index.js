@@ -24,6 +24,10 @@ class DataAccess {
         "SELECT role.id, role.title, department.name AS department, role.salary FROM role LEFT JOIN department ON role.department_id = department.id;"
       );
   }
+
+  createDepartment(department) {
+    return this.connection.promise().query("INSERT INTO department SET ?", department);
+  }
 }
 
 module.exports = new DataAccess(connection);
