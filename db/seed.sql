@@ -30,4 +30,4 @@ VALUES
     ('Jamie', 'Tee', 5, NULL),
     ('Alex', 'Cee', 6, 5),
     ('Erin', 'Yee', 7, NULL),
-    ('Dexter', 'Poe', 8, 7),
+    ('Dexter', 'Poe', 8, 7);
