@@ -28,6 +28,10 @@ function showPrompt() {
           value: "addDepartment",
         },
         {
+          name: "Add a role",
+          value: "addRole",
+        },
+        {
           name: "Quit",
           value: "quit",
         },
@@ -47,6 +51,9 @@ function showPrompt() {
         break;
       case "addDepartment":
         addDepartment();
+        break;
+      case "addRole":
+        addRole();
         break;
       default:
         quit();
@@ -96,6 +103,38 @@ function addDepartment() {
       .createDepartment(department)
       .then(() => console.log(`Department ${department.name} added`))
       .then(() => showPrompt());
+  });
+}
+
+function addRole() {
+  data.findAllDepartments().then(([rows]) => {
+    let departments = rows;
+    const choices = departments.map(({ id, name }) => ({
+      name: name,
+      value: id,
+    }));
+
+    prompt([
+      {
+        name: "title",
+        message: "What is the name of the role?",
+      },
+      {
+        name: "salary",
+        message: "How much does this role make a year?",
+      },
+      {
+        type: "list",
+        name: "department_id",
+        message: "Which department is this role in?",
+        choices: choices,
+      },
+    ]).then((role) => {
+      data
+        .createRole(role)
+        .then(() => console.log(`Role of ${role.title} added`))
+        .then(() => showPrompt());
+    });
   });
 }
 

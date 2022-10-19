@@ -28,6 +28,10 @@ class DataAccess {
   createDepartment(department) {
     return this.connection.promise().query("INSERT INTO department SET ?", department);
   }
+
+  createRole(role) {
+    return this.connection.promise().query("INSERT INTO role SET ?", role);
+  }
 }
 
 module.exports = new DataAccess(connection);
