@@ -32,6 +32,10 @@ function showPrompt() {
           value: "addRole",
         },
         {
+          name: "Add an employee",
+          value: "addEmployee",
+        },
+        {
           name: "Quit",
           value: "quit",
         },
@@ -54,6 +58,9 @@ function showPrompt() {
         break;
       case "addRole":
         addRole();
+        break;
+      case "addEmployee":
+        addEmployee();
         break;
       default:
         quit();
@@ -134,6 +141,67 @@ function addRole() {
         .createRole(role)
         .then(() => console.log(`Role of ${role.title} added`))
         .then(() => showPrompt());
+    });
+  });
+}
+
+function addEmployee() {
+  prompt([
+    {
+      name: "first_name",
+      message: "What is the new employee's first name?",
+    },
+    {
+      name: "last_name",
+      message: "What is the new employee's last name?",
+    },
+  ]).then((res) => {
+    let firstName = res.first_name;
+    let lastName = res.last_name;
+    data.findAllRoles().then(([rows]) => {
+      let roles = rows;
+      const roleChoice = roles.map(({ id, title }) => ({
+        name: title,
+        value: id,
+      }));
+
+      prompt({
+        type: "list",
+        name: "roleId",
+        message: "What is the new employee's role?",
+        choices: roleChoice,
+      }).then((res) => {
+        let roleId = res.roleId;
+
+        data.findAllEmployess().then(([rows]) => {
+          let managers = rows;
+          const managerChoice = managers.map(({ id, first_name, last_name }) => ({
+            name: `${first_name} ${last_name}`,
+            value: id,
+          }));
+
+          managerChoice.unshift({ name: "N/A", value: null });
+
+          prompt({
+            type: "list",
+            name: "managerId",
+            message: "Who is the new employee's manager?",
+            choices: managerChoice,
+          })
+            .then((res) => {
+              let employee = {
+                first_name: firstName,
+                last_name: lastName,
+                role_id: roleId,
+                manager_id: res.managerId,
+              };
+
+              data.createEmployee(employee);
+            })
+            .then(() => console.log(`Added new employee ${firstName} ${lastName}`))
+            .then(() => showPrompt());
+        });
+      });
     });
   });
 }
